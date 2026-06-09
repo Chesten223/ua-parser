@@ -309,5 +309,19 @@ footer a:hover{color:var(--text)}
   document.getElementById('currentUA').textContent=navigator.userAgent;
 })();
 </script>
+
+<!-- Email subscription widget -->
+<div style="padding:20px 24px;border-top:1px solid var(--border);max-width:800px;margin:0 auto">
+  <h3 style="font-size:18px;margin-bottom:8px;color:var(--text)">📬 Get Dev Tool Updates</h3>
+  <p style="color:var(--dim);font-size:13px;margin-bottom:12px">Join developers getting new free tools weekly. No spam.</p>
+  <div style="display:flex;gap:8px;max-width:400px">
+    <input id="email-input" type="email" placeholder="your@email.com" style="flex:1;padding:8px 12px;background:var(--card);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:14px">
+    <button onclick="subscribe()" style="padding:8px 16px;background:var(--green);color:#fff;border:none;border-radius:6px;font-weight:600;cursor:pointer;font-size:14px">Subscribe</button>
+  </div>
+  <p id="subscribe-msg" style="font-size:12px;margin-top:8px;display:none"></p>
+</div>
+<script>
+async function subscribe(){const e=document.getElementById("email-input").value,m=document.getElementById("subscribe-msg");if(!e||!e.includes("@")){m.textContent="Please enter a valid email";m.style.color="#f85149";m.style.display="block";return}try{const r=await fetch("https://email-collector.chesten.workers.dev/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:e})});const d=await r.json();m.textContent=d.message||"Subscribed!";m.style.color="#3fb950";m.style.display="block";document.getElementById("email-input").value=""}catch(e){m.textContent="Something went wrong";m.style.color="#f85149";m.style.display="block"}}
+</script>
 </body>
 </html>
