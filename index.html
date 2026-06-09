@@ -323,5 +323,21 @@ footer a:hover{color:var(--text)}
 <script>
 async function subscribe(){const e=document.getElementById("email-input").value,m=document.getElementById("subscribe-msg");if(!e||!e.includes("@")){m.textContent="Please enter a valid email";m.style.color="#f85149";m.style.display="block";return}try{const r=await fetch("https://email-collector.chesten.workers.dev/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:e})});const d=await r.json();m.textContent=d.message||"Subscribed!";m.style.color="#3fb950";m.style.display="block";document.getElementById("email-input").value=""}catch(e){m.textContent="Something went wrong";m.style.color="#f85149";m.style.display="block"}}
 </script>
+
+<!-- More Free Tools -->
+<div style="padding:20px 24px;border-top:1px solid var(--border);max-width:800px;margin:0 auto">
+  <h3 style="font-size:16px;margin-bottom:12px;color:var(--text)">🔧 More Free Developer Tools</h3>
+  <div style="display:flex;flex-wrap:wrap;gap:8px">
+    <a href="https://json-hero-8fu.pages.dev" style="padding:6px 12px;background:var(--card);border:1px solid var(--border);border-radius:4px;color:var(--dim);text-decoration:none;font-size:13px">JSON Hero</a>
+    <a href="https://css-gradient-c7l.pages.dev" style="padding:6px 12px;background:var(--card);border:1px solid var(--border);border-radius:4px;color:var(--dim);text-decoration:none;font-size:13px">CSS Gradient</a>
+    <a href="https://regex-tester-bik.pages.dev" style="padding:6px 12px;background:var(--card);border:1px solid var(--border);border-radius:4px;color:var(--dim);text-decoration:none;font-size:13px">Regex Tester</a>
+    <a href="https://color-picker-dv4.pages.dev" style="padding:6px 12px;background:var(--card);border:1px solid var(--border);border-radius:4px;color:var(--dim);text-decoration:none;font-size:13px">Color Picker</a>
+    <a href="https://json-to-ts.pages.dev" style="padding:6px 12px;background:var(--card);border:1px solid var(--border);border-radius:4px;color:var(--dim);text-decoration:none;font-size:13px">JSON→TS</a>
+    <a href="https://base64-tool-bhc.pages.dev" style="padding:6px 12px;background:var(--card);border:1px solid var(--border);border-radius:4px;color:var(--dim);text-decoration:none;font-size:13px">Base64</a>
+    <a href="https://diff-checker-1c9.pages.dev" style="padding:6px 12px;background:var(--card);border:1px solid var(--border);border-radius:4px;color:var(--dim);text-decoration:none;font-size:13px">Diff Checker</a>
+    <a href="https://password-gen-4jj.pages.dev" style="padding:6px 12px;background:var(--card);border:1px solid var(--border);border-radius:4px;color:var(--dim);text-decoration:none;font-size:13px">Password Gen</a>
+    <a href="https://devtools-site-cos.pages.dev" style="padding:6px 12px;background:var(--green);border:1px solid var(--border);border-radius:4px;color:#fff;text-decoration:none;font-size:13px;font-weight:600">All 30+ Tools →</a>
+  </div>
+</div>
 </body>
 </html>
