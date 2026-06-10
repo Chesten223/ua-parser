@@ -2,342 +2,407 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>User Agent Parser — Free Online UA String Decoder</title>
-<meta name="description" content="Decode any User-Agent string instantly. Extract browser, OS, device type, engine and platform for free. No signup required.">
-<meta name="keywords" content="user agent parser,UA decoder,browser detection,UA string analyzer,useragent lookup">
-<link rel="canonical" href="https://ua-parser.pages.dev/">
-<meta property="og:title" content="User Agent Parser — Free Online UA String Decoder">
-<meta property="og:description" content="Decode any User-Agent string instantly. Extract browser, OS, device, engine and platform for free.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UA Parser — User Agent String Analyzer</title>
+<meta name="description" content="Parse any User Agent string instantly. Detect browser, engine, OS, device type, and bots. Free developer tool.">
+<meta property="og:title" content="UA Parser — User Agent String Analyzer">
+<meta property="og:description" content="Parse any User Agent string instantly. Detect browser, engine, OS, device type, and bots. Free developer tool.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://ua-parser.pages.dev/">
-<meta property="og:image" content="https://ua-parser.pages.dev/og.png">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="User Agent Parser — Free Online UA String Decoder">
-<meta name="twitter:description" content="Decode any User-Agent string instantly. Extract browser, OS, device, engine and platform for free.">
-<script type="application/ld+json">
-{
-  "@context":"https://schema.org",
-  "@type":"WebApplication",
-  "name":"User Agent Parser",
-  "url":"https://ua-parser.pages.dev/",
-  "description":"Free online tool to decode User-Agent strings into browser, OS, device, engine and platform details.",
-  "applicationCategory":"DeveloperApplication",
-  "operatingSystem":"All",
-  "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},
-  "browserRequirements":"Requires JavaScript"
-}
-</script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#0d1117;--card:#161b22;--border:#30363d;--text:#e6edf3;--dim:#8b949e;--green:#238636;--blue:#1f6feb;--blue-hover:#388bfd;--radius:8px}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
-a{color:var(--blue);text-decoration:none}
-a:hover{text-decoration:underline}
-.container{max-width:900px;margin:0 auto;padding:0 20px}
-header{text-align:center;padding:48px 20px 24px}
-header h1{font-size:clamp(1.6rem,4vw,2.2rem);font-weight:700;margin-bottom:8px}
-header h1 span{color:var(--blue)}
-header p{color:var(--dim);font-size:1rem;max-width:540px;margin:0 auto}
-.current-ua{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px;margin:20px 0 32px;font-size:.85rem;color:var(--dim);word-break:break-all}
-.current-ua strong{color:var(--text);display:block;margin-bottom:4px}
-.parser-section{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:24px}
-.parser-section label{display:block;font-weight:600;margin-bottom:10px;font-size:1rem}
-.input-row{display:flex;gap:10px;margin-bottom:16px}
-.input-row textarea{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:12px;color:var(--text);font-size:.9rem;font-family:'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace;resize:vertical;min-height:70px}
-.input-row textarea:focus{outline:none;border-color:var(--blue)}
-.btn-group{display:flex;flex-direction:column;gap:8px}
-.btn{padding:10px 18px;border-radius:var(--radius);border:none;cursor:pointer;font-size:.88rem;font-weight:600;white-space:nowrap;transition:background .15s}
-.btn-primary{background:var(--green);color:#fff}
-.btn-primary:hover{background:#2ea043}
-.btn-secondary{background:var(--blue);color:#fff}
-.btn-secondary:hover{background:var(--blue-hover)}
-.btn-outline{background:transparent;border:1px solid var(--border);color:var(--dim)}
-.btn-outline:hover{border-color:var(--dim);color:var(--text)}
-#result{display:none;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-top:16px}
-#result table{width:100%;border-collapse:collapse}
-#result td{padding:8px 0;vertical-align:top}
-#result td:first-child{color:var(--dim);width:130px;font-weight:600}
-#result td:last-child{font-family:'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace;font-size:.88rem}
-.copy-row{margin-top:12px;text-align:right}
-.history-section{margin-bottom:24px}
-.history-section h3{font-size:1.1rem;margin-bottom:12px}
-.history-list{display:flex;flex-direction:column;gap:8px}
-.history-item{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;cursor:pointer;transition:border-color .15s;font-size:.82rem;font-family:'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace;color:var(--dim);word-break:break-all}
-.history-item:hover{border-color:var(--blue);color:var(--text)}
-.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:40px}
-.feature-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
-.feature-card h4{margin-bottom:6px;color:var(--text)}
-.feature-card p{color:var(--dim);font-size:.88rem}
-.faq{margin-bottom:40px}
-.faq h3{font-size:1.3rem;margin-bottom:16px}
-.faq-item{border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden}
-.faq-q{padding:14px 18px;cursor:pointer;font-weight:600;display:flex;justify-content:space-between;align-items:center;background:var(--card)}
-.faq-q::after{content:'+';font-size:1.2rem;color:var(--dim);transition:transform .2s}
-.faq-item.open .faq-q::after{content:'−'}
-.faq-a{padding:0 18px;max-height:0;overflow:hidden;color:var(--dim);font-size:.9rem;transition:padding .2s,max-height .3s}
-.faq-item.open .faq-a{padding:14px 18px;max-height:200px}
-.subscribe{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;text-align:center;margin-bottom:40px}
-.subscribe h3{margin-bottom:6px;font-size:1.15rem}
-.subscribe p{color:var(--dim);font-size:.9rem;margin-bottom:14px}
-.subscribe-form{display:flex;gap:8px;max-width:420px;margin:0 auto}
-.subscribe-form input{flex:1;padding:10px 14px;border-radius:var(--radius);border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:.9rem}
-.subscribe-form input:focus{outline:none;border-color:var(--blue)}
-.subscribe-form button{padding:10px 20px}
-footer{text-align:center;padding:32px 20px;color:var(--dim);font-size:.82rem;border-top:1px solid var(--border)}
-footer a{color:var(--dim)}
-footer a:hover{color:var(--text)}
-@media(max-width:600px){
-  .input-row{flex-direction:column}
-  .btn-group{flex-direction:row;flex-wrap:wrap}
-  .subscribe-form{flex-direction:column}
-  #result td:first-child{width:100px}
-}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0a0a; color: #e5e7eb; min-height: 100vh; line-height: 1.5; }
+a { color: #22c55e; text-decoration: none; }
+
+header { padding: 2rem 1rem 1rem; text-align: center; }
+header h1 { font-size: 1.75rem; font-weight: 700; color: #fff; }
+header p { color: #9ca3af; margin-top: .25rem; font-size: .9rem; }
+
+.container { max-width: 860px; margin: 0 auto; padding: 0 1rem 2rem; }
+
+/* Input area */
+.input-section { margin-top: 1.5rem; }
+.input-section label { display: block; font-size: .8rem; color: #9ca3af; margin-bottom: .4rem; text-transform: uppercase; letter-spacing: .05em; }
+#ua-input { width: 100%; background: #111827; border: 1px solid #1f2937; border-radius: 8px; padding: .75rem 1rem; color: #e5e7eb; font-family: 'SF Mono', 'Fira Code', monospace; font-size: .85rem; resize: vertical; min-height: 80px; }
+#ua-input:focus { outline: none; border-color: #22c55e; }
+.btn-row { display: flex; gap: .5rem; margin-top: .75rem; flex-wrap: wrap; }
+button { background: #111827; border: 1px solid #1f2937; border-radius: 6px; padding: .5rem 1rem; color: #e5e7eb; font-size: .85rem; cursor: pointer; transition: border-color .15s, background .15s; }
+button:hover { border-color: #22c55e; background: #1a2332; }
+button.primary { background: #22c55e; color: #0a0a0a; border-color: #22c55e; font-weight: 600; }
+button.primary:hover { background: #16a34a; border-color: #16a34a; }
+
+/* Current UA bar */
+.current-ua { margin-top: 1rem; background: #111827; border: 1px solid #1f2937; border-radius: 8px; padding: .75rem 1rem; font-family: 'SF Mono', monospace; font-size: .8rem; color: #9ca3af; word-break: break-all; display: flex; gap: .5rem; align-items: flex-start; }
+.current-ua code { flex: 1; }
+.current-ua button { flex-shrink: 0; padding: .25rem .6rem; font-size: .75rem; }
+
+/* Results */
+.results { margin-top: 1.5rem; display: none; }
+.results.visible { display: block; }
+.result-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: .75rem; margin-top: .75rem; }
+.result-card { background: #111827; border: 1px solid #1f2937; border-radius: 8px; padding: .75rem 1rem; }
+.result-card .label { font-size: .7rem; text-transform: uppercase; letter-spacing: .06em; color: #6b7280; margin-bottom: .25rem; }
+.result-card .value { font-size: 1rem; font-weight: 600; color: #fff; }
+.result-card .value.bot { color: #f97316; }
+.result-card .value.accent { color: #22c55e; }
+
+/* Raw JSON */
+.raw-section { margin-top: 1.5rem; display: none; }
+.raw-section.visible { display: block; }
+.raw-section summary { cursor: pointer; font-size: .85rem; color: #9ca3af; padding: .5rem 0; }
+.raw-section pre { background: #111827; border: 1px solid #1f2937; border-radius: 8px; padding: 1rem; font-size: .8rem; color: #d1d5db; overflow-x: auto; white-space: pre-wrap; word-break: break-all; }
+
+/* Preset library */
+.library { margin-top: 2rem; }
+.library h2 { font-size: 1rem; color: #fff; margin-bottom: .75rem; }
+.lib-tabs { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: .5rem; }
+.lib-tabs button { font-size: .78rem; padding: .35rem .75rem; }
+.lib-tabs button.active { border-color: #22c55e; color: #22c55e; }
+.lib-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: .5rem; }
+.lib-item { background: #111827; border: 1px solid #1f2937; border-radius: 6px; padding: .5rem .75rem; cursor: pointer; font-size: .8rem; color: #d1d5db; transition: border-color .15s; display: flex; justify-content: space-between; align-items: center; }
+.lib-item:hover { border-color: #22c55e; }
+.lib-item .name { color: #22c55e; font-weight: 600; flex-shrink: 0; }
+.lib-item .ua-preview { color: #6b7280; font-size: .72rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-left: .5rem; }
+
+/* Toast */
+.toast { position: fixed; bottom: 1.5rem; right: 1.5rem; background: #22c55e; color: #0a0a0a; padding: .5rem 1rem; border-radius: 6px; font-size: .85rem; font-weight: 600; opacity: 0; transition: opacity .2s; pointer-events: none; }
+.toast.show { opacity: 1; }
+
+footer { text-align: center; padding: 2rem 1rem; color: #4b5563; font-size: .75rem; }
 </style>
 </head>
 <body>
-<div class="container">
+
 <header>
-  <h1><span>UA</span> Parser</h1>
-  <p>Decode any User-Agent string into browser, OS, device, engine &amp; platform details — instantly &amp; privately.</p>
+  <h1>UA Parser</h1>
+  <p>Parse any User Agent string — browser, engine, OS, device, bots</p>
 </header>
 
-<div class="current-ua">
-  <strong>Your current User-Agent:</strong>
-  <span id="currentUA"></span>
-</div>
+<div class="container">
+  <!-- Current UA -->
+  <div class="current-ua">
+    <code id="current-ua"></code>
+    <button onclick="useCurrentUA()">Use This</button>
+  </div>
 
-<div class="parser-section">
-  <label for="uaInput">Paste a User-Agent string</label>
-  <div class="input-row">
-    <textarea id="uaInput" placeholder="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 …"></textarea>
-    <div class="btn-group">
-      <button class="btn btn-primary" onclick="parseUA()">Parse</button>
-      <button class="btn btn-secondary" onclick="randomUA()">Random UA</button>
-      <button class="btn btn-outline" onclick="parseCurrent()">Use Mine</button>
+  <!-- Input -->
+  <div class="input-section">
+    <label for="ua-input">Paste a User-Agent string</label>
+    <textarea id="ua-input" placeholder="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 ..."></textarea>
+    <div class="btn-row">
+      <button class="primary" onclick="parseInput()">Parse</button>
+      <button onclick="document.getElementById('ua-input').value='';hideResults()">Clear</button>
+      <button onclick="copyJSON()">Copy JSON</button>
+      <button onclick="exportJSON()">Export .json</button>
     </div>
   </div>
-  <div id="result"></div>
-</div>
 
-<div class="history-section" id="historySection" style="display:none">
-  <h3>Recent Parses</h3>
-  <div class="history-list" id="historyList"></div>
-</div>
-
-<div class="features">
-  <div class="feature-card"><h4>🔒 100% Private</h4><p>All parsing happens in your browser. No data is ever sent to a server.</p></div>
-  <div class="feature-card"><h4>⚡ Instant Results</h4><p>Zero network calls. Parse thousands of UA strings per second locally.</p></div>
-  <div class="feature-card"><h4>📋 Copy as JSON</h4><p>One click to copy structured JSON output for APIs, logs, or documentation.</p></div>
-  <div class="feature-card"><h4>🎲 Random Generator</h4><p>Generate realistic UA strings from common browsers for testing purposes.</p></div>
-</div>
-
-<section class="faq">
-  <h3>Frequently Asked Questions</h3>
-  <div class="faq-item" onclick="this.classList.toggle('open')">
-    <div class="faq-q">What is a User-Agent string?</div>
-    <div class="faq-a">A User-Agent string is an HTTP header your browser sends to every website. It identifies your browser type, version, operating system, and device so servers can serve compatible content.</div>
+  <!-- Results -->
+  <div class="results" id="results">
+    <div class="result-grid" id="result-grid"></div>
+    <details class="raw-section visible" id="raw-section">
+      <summary>Raw JSON</summary>
+      <pre id="raw-json"></pre>
+    </details>
   </div>
-  <div class="faq-item" onclick="this.classList.toggle('open')">
-    <div class="faq-q">How accurate is this parser?</div>
-    <div class="faq-a">The parser uses comprehensive pattern matching for all major browsers and operating systems. It handles modern Chromium-based browsers, Firefox, Safari, Edge, and legacy browsers accurately.</div>
-  </div>
-  <div class="faq-item" onclick="this.classList.toggle('open')">
-    <div class="faq-q">Is my data stored anywhere?</div>
-    <div class="faq-a">No. All parsing runs entirely in your browser using JavaScript. No UA string is transmitted to any server. The last 5 parses are kept in memory only and disappear when you close the tab.</div>
-  </div>
-</section>
 
-<div class="subscribe">
-  <h3>Stay Updated</h3>
-  <p>Get notified about new developer tools we release. No spam, ever.</p>
-  <div class="subscribe-form">
-    <input type="email" id="emailInput" placeholder="you@example.com">
-    <button class="btn btn-primary" onclick="subscribe()">Subscribe</button>
+  <!-- Preset Library -->
+  <div class="library">
+    <h2>Common User Agents</h2>
+    <div class="lib-tabs" id="lib-tabs"></div>
+    <div class="lib-list" id="lib-list"></div>
   </div>
-  <div id="subMsg" style="margin-top:10px;font-size:.85rem;color:var(--green);display:none"></div>
 </div>
 
-<footer>
-  <p>UA Parser — Free Online User-Agent Decoder &bull; Built with ♥ &bull; <a href="/sitemap.xml">Sitemap</a></p>
-  <p style="margin-top:4px">&copy; 2026 UA Parser. All rights reserved.</p>
-</footer>
-</div>
+<div class="toast" id="toast"></div>
+
+<footer>UA Parser — free developer tool. All parsing runs in your browser.</footer>
 
 <script>
-(function(){
-  const history=[];
-  const MAX_HISTORY=5;
+// --- Preset UA Library ---
+const PRESETS = {
+  'Chrome': [
+    { name: 'Chrome 125 / Windows 10', ua: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36' },
+    { name: 'Chrome 125 / macOS', ua: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36' },
+    { name: 'Chrome 125 / Linux', ua: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36' },
+    { name: 'Chrome 125 / Android', ua: 'Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.6422.113 Mobile Safari/537.36' },
+  ],
+  'Firefox': [
+    { name: 'Firefox 126 / Windows 10', ua: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0' },
+    { name: 'Firefox 126 / macOS', ua: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 14.5; rv:126.0) Gecko/20100101 Firefox/126.0' },
+    { name: 'Firefox 126 / Linux', ua: 'Mozilla/5.0 (X11; Linux x86_64; rv:126.0) Gecko/20100101 Firefox/126.0' },
+    { name: 'Firefox 126 / Android', ua: 'Mozilla/5.0 (Android 14; Mobile; rv:126.0) Gecko/126.0 Firefox/126.0' },
+  ],
+  'Safari': [
+    { name: 'Safari 17 / macOS', ua: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15' },
+    { name: 'Safari / iPhone', ua: 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1' },
+    { name: 'Safari / iPad', ua: 'Mozilla/5.0 (iPad; CPU OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1' },
+  ],
+  'Edge': [
+    { name: 'Edge 125 / Windows 10', ua: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0' },
+    { name: 'Edge 125 / macOS', ua: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0' },
+  ],
+  'Bots': [
+    { name: 'Googlebot', ua: 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)' },
+    { name: 'Bingbot', ua: 'Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)' },
+    { name: 'Slackbot', ua: 'Slackbot-LinkExpanding 1.0 (+https://api.slack.com/robots)' },
+    { name: 'Discord Bot', ua: 'Mozilla/5.0 (compatible; Discordbot/2.0; +https://discordapp.com)' },
+    { name: 'Twitterbot', ua: 'Twitterbot/1.0' },
+    { name: 'facebookexternalhit', ua: 'facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)' },
+    { name: 'LinkedIn Bot', ua: 'LinkedInBot/1.0 (http://www.linkedin.com/)' },
+    { name: 'curl', ua: 'curl/8.7.1' },
+  ],
+};
 
-  const RANDOM_UAS=[
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15',
-    'Mozilla/5.0 (X11; Linux x86_64; rv:126.0) Gecko/20100101 Firefox/126.0',
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0',
-    'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Mobile/15E148 Safari/604.1',
-    'Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.6422.113 Mobile Safari/537.36',
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 OPR/111.0.0.0',
-    'Mozilla/5.0 (iPad; CPU OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Mobile/15E148 Safari/604.1',
-    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0',
-    'Mozilla/5.0 (Linux; Android 14; SM-S928B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.6422.113 Mobile Safari/537.36'
+// --- Bot Patterns ---
+const BOT_PATTERNS = [
+  /googlebot/i, /bingbot/i, /yandexbot/i, /baiduspider/i, /duckduckbot/i,
+  /slurp/i, /sogou/i, /exabot/i, /facebot/i, /facebookexternalhit/i,
+  /ia_archiver/i, /alexabot/i, /mj12bot/i, /ahrefsbot/i, /semrushbot/i,
+  /dotbot/i, /rogerbot/i, /seznambot/i, /twitterbot/i, /slackbot/i,
+  /discordbot/i, /telegrambot/i, /linkedinbot/i, /pinterestbot/i,
+  /applebot/i, /tumblr/i, /vkshare/i, / whatsapp/i,
+  /headlesschrome/i, /phantomjs/i, /selenium/i, /puppeteer/i, /playwright/i,
+  /^curl\//i, /^wget\//i, /^python-requests/i, /^java\//i, /^httpie\//i,
+  /^go-http-client/i, /^node-fetch/i, /^axios/i, /^ruby/i,
+  /bot$/i, /spider/i, /crawler/i, /scraper/i,
+];
+
+// --- Parser ---
+function parseUA(ua) {
+  if (!ua || !ua.trim()) return null;
+  ua = ua.trim();
+
+  const result = {
+    userAgent: ua,
+    browser: { name: 'Unknown', version: '' },
+    engine: { name: 'Unknown', version: '' },
+    os: { name: 'Unknown', version: '' },
+    device: { type: 'Desktop', brand: '' },
+    isBot: false,
+    botName: '',
+  };
+
+  // Bot detection first
+  for (const pat of BOT_PATTERNS) {
+    const m = ua.match(pat);
+    if (m) {
+      result.isBot = true;
+      result.botName = m[0];
+      result.device.type = 'Bot';
+      break;
+    }
+  }
+
+  // Engine
+  if (/AppleWebKit\/([\d.]+)/.test(ua)) {
+    result.engine.name = 'WebKit';
+    result.engine.version = ua.match(/AppleWebKit\/([\d.]+)/)[1];
+    if (/Chrome\/([\d.]+)/.test(ua)) {
+      result.engine.name = 'Blink';
+    }
+  } else if (/Gecko\/([\d.]+)/.test(ua)) {
+    result.engine.name = 'Gecko';
+    const rv = ua.match(/rv:([\d.]+)/);
+    if (rv) result.engine.version = rv[1];
+  } else if (/Trident\/([\d.]+)/.test(ua)) {
+    result.engine.name = 'Trident';
+    result.engine.version = ua.match(/Trident\/([\d.]+)/)[1];
+  } else if (/Presto\/([\d.]+)/.test(ua)) {
+    result.engine.name = 'Presto';
+    result.engine.version = ua.match(/Presto\/([\d.]+)/)[1];
+  }
+
+  // OS
+  if (/Windows NT ([\d.]+)/.test(ua)) {
+    result.os.name = 'Windows';
+    const v = ua.match(/Windows NT ([\d.]+)/)[1];
+    const map = { '10.0': '10/11', '6.3': '8.1', '6.2': '8', '6.1': '7', '6.0': 'Vista', '5.1': 'XP' };
+    result.os.version = map[v] || v;
+  } else if (/Mac OS X ([\d_]+)/.test(ua)) {
+    result.os.name = 'macOS';
+    result.os.version = ua.match(/Mac OS X ([\d_]+)/)[1].replace(/_/g, '.');
+  } else if (/Android ([\d.]+)/.test(ua)) {
+    result.os.name = 'Android';
+    result.os.version = ua.match(/Android ([\d.]+)/)[1];
+  } else if (/iPhone OS ([\d_]+)/.test(ua)) {
+    result.os.name = 'iOS';
+    result.os.version = ua.match(/iPhone OS ([\d_]+)/)[1].replace(/_/g, '.');
+  } else if (/iPad.*OS ([\d_]+)/.test(ua)) {
+    result.os.name = 'iOS';
+    result.os.version = ua.match(/iPad.*OS ([\d_]+)/)[1].replace(/_/g, '.');
+  } else if (/CrOS/.test(ua)) {
+    result.os.name = 'ChromeOS';
+  } else if (/Linux/.test(ua)) {
+    result.os.name = 'Linux';
+  }
+
+  // Browser
+  const browserTests = [
+    [/Edg\/([\d.]+)/, 'Edge'],
+    [/OPR\/([\d.]+)/, 'Opera'],
+    [/Vivaldi\/([\d.]+)/, 'Vivaldi'],
+    [/SamsungBrowser\/([\d.]+)/, 'Samsung Internet'],
+    [/UCBrowser\/([\d.]+)/, 'UC Browser'],
+    [/Firefox\/([\d.]+)/, 'Firefox'],
+    [/FxiOS\/([\d.]+)/, 'Firefox'],
+    [/Version\/([\d.]+).*Safari\//, 'Safari'],
+    [/Chrome\/([\d.]+)/, 'Chrome'],
+    [/CriOS\/([\d.]+)/, 'Chrome'],
+    [/Safari\/([\d.]+)/, 'Safari'],
   ];
 
-  function detect(ua){
-    const r={browser:'Unknown',browserVersion:'',os:'Unknown',osVersion:'',device:'Desktop',engine:'Unknown',platform:'Unknown'};
-    // Engine
-    if(/Trident\/[\d.]+/.test(ua))r.engine='Trident';
-    else if(/Gecko\/[\d]+/.test(ua)&&!/like Gecko/.test(ua))r.engine='Gecko';
-    else if(/AppleWebKit\/[\d.]+/.test(ua))r.engine='WebKit (Blink)';
-    // Browser
-    let m;
-    if(m=ua.match(/Edg\/([\d.]+)/)){r.browser='Edge';r.browserVersion=m[1]}
-    else if(m=ua.match(/OPR\/([\d.]+)/)){r.browser='Opera';r.browserVersion=m[1]}
-    else if(m=ua.match(/Vivaldi\/([\d.]+)/)){r.browser='Vivaldi';r.browserVersion=m[1]}
-    else if(m=ua.match(/YaBrowser\/([\d.]+)/)){r.browser='Yandex';r.browserVersion=m[1]}
-    else if(m=ua.match(/SamsungBrowser\/([\d.]+)/)){r.browser='Samsung Internet';r.browserVersion=m[1]}
-    else if(m=ua.match(/UCBrowser\/([\d.]+)/)){r.browser='UC Browser';r.browserVersion=m[1]}
-    else if(m=ua.match(/Firefox\/([\d.]+)/)){r.browser='Firefox';r.browserVersion=m[1]}
-    else if(m=ua.match(/SEMC-Browser\/([\d.]+)/)){r.browser='Sony Ericsson';r.browserVersion=m[1]}
-    else if(/Safari\//.test(ua)&&!/Chrome/.test(ua)){
-      r.browser='Safari';
-      if(m=ua.match(/Version\/([\d.]+)/))r.browserVersion=m[1];
+  // Bot identity as browser name
+  if (result.isBot && !result.botName.match(/bot$/i) && !result.botName.match(/spider|crawler|scraper/i)) {
+    // capitalize
+    result.browser.name = result.botName.charAt(0).toUpperCase() + result.botName.slice(1);
+  }
+
+  for (const [re, name] of browserTests) {
+    const m = ua.match(re);
+    if (m) {
+      result.browser.name = name;
+      result.browser.version = m[1];
+      break;
     }
-    else if(m=ua.match(/Chrome\/([\d.]+)/)){r.browser='Chrome';r.browserVersion=m[1]}
-    else if(m=ua.match(/MSIE ([\d.]+)/)){r.browser='Internet Explorer';r.browserVersion=m[1]}
-    else if(m=ua.match(/Trident\/.*rv:([\d.]+)/)){r.browser='Internet Explorer';r.browserVersion=m[1]}
-    // OS
-    if(m=ua.match(/Windows NT ([\d.]+)/)){
-      r.os='Windows';const v={'10.0':'10/11','6.3':'8.1','6.2':'8','6.1':'7','6.0':'Vista','5.1':'XP'};
-      r.osVersion=v[m[1]]||m[1];
-    }else if(m=ua.match(/Mac OS X ([\d_]+)/)){
-      r.os='macOS';r.osVersion=m[1].replace(/_/g,'.');
-    }else if(m=ua.match(/Android ([\d.]+)/)){
-      r.os='Android';r.osVersion=m[1];
-    }else if(m=ua.match(/iPhone OS ([\d_]+)/)){
-      r.os='iOS';r.osVersion=m[1].replace(/_/g,'.');
-    }else if(m=ua.match(/iPad.*OS ([\d_]+)/)){
-      r.os='iPadOS';r.osVersion=m[1].replace(/_/g,'.');
-    }else if(/CrOS/.test(ua)){r.os='ChromeOS'}
-    else if(/Linux/.test(ua)){r.os='Linux'}
-    // Device
-    if(/Mobile|Android.*Mobile|iPhone|iPod/.test(ua))r.device='Mobile';
-    else if(/iPad|Android(?!.*Mobile)/.test(ua))r.device='Tablet';
-    else if(/bot|crawl|spider|slurp|mediapartners/i.test(ua))r.device='Bot/Crawler';
-    else r.device='Desktop';
-    // Platform
-    if(r.os==='Windows')r.platform='x86/x64';
-    else if(r.os==='macOS'||r.os==='iPadOS')r.platform='ARM (Apple Silicon) / x86';
-    else if(r.os==='Android'||r.os==='iOS')r.platform='ARM';
-    else if(r.os==='Linux'||r.os==='ChromeOS')r.platform='x86_64';
-    return r;
   }
 
-  function renderResult(parsed,ua){
-    const el=document.getElementById('result');
-    el.style.display='block';
-    el.innerHTML=`
-      <table>
-        <tr><td>Browser</td><td>${parsed.browser} ${parsed.browserVersion}</td></tr>
-        <tr><td>OS</td><td>${parsed.os} ${parsed.osVersion}</td></tr>
-        <tr><td>Device</td><td>${parsed.device}</td></tr>
-        <tr><td>Engine</td><td>${parsed.engine}</td></tr>
-        <tr><td>Platform</td><td>${parsed.platform}</td></tr>
-      </table>
-      <div class="copy-row"><button class="btn btn-outline" onclick="copyJSON(this)">📋 Copy JSON</button></div>`;
-    el._parsed=parsed;
-    addHistory(ua,parsed);
+  // Device type
+  if (!result.isBot) {
+    if (/Mobile/i.test(ua) || /iPhone/.test(ua) || /Android.*Mobile/.test(ua)) {
+      result.device.type = 'Mobile';
+    } else if (/iPad/.test(ua) || /Tablet/.test(ua)) {
+      result.device.type = 'Tablet';
+    } else if (/Android/.test(ua) && !/Mobile/.test(ua)) {
+      result.device.type = 'Tablet';
+    } else {
+      result.device.type = 'Desktop';
+    }
   }
 
-  function addHistory(ua,parsed){
-    history.unshift({ua,browser:parsed.browser+' '+parsed.browserVersion,os:parsed.os+' '+parsed.osVersion});
-    if(history.length>MAX_HISTORY)history.pop();
-    renderHistory();
-  }
+  // Device brand hints
+  if (/iPhone/.test(ua)) result.device.brand = 'Apple';
+  else if (/iPad/.test(ua)) result.device.brand = 'Apple';
+  else if (/Macintosh/.test(ua)) result.device.brand = 'Apple';
+  else if (/Pixel/.test(ua)) result.device.brand = 'Google';
+  else if (/Samsung/.test(ua)) result.device.brand = 'Samsung';
+  else if (/Galaxy/.test(ua)) result.device.brand = 'Samsung';
 
-  function renderHistory(){
-    const sec=document.getElementById('historySection');
-    const list=document.getElementById('historyList');
-    if(!history.length){sec.style.display='none';return}
-    sec.style.display='block';
-    list.innerHTML=history.map((h,i)=>`<div class="history-item" onclick="loadHistory(${i})" title="${h.ua}">${h.browser} · ${h.os}</div>`).join('');
-  }
+  return result;
+}
 
-  window.parseUA=function(){
-    const ua=document.getElementById('uaInput').value.trim();
-    if(!ua)return;
-    renderResult(detect(ua),ua);
-  };
+// --- Rendering ---
+let lastResult = null;
 
-  window.parseCurrent=function(){
-    const ua=navigator.userAgent;
-    document.getElementById('uaInput').value=ua;
-    renderResult(detect(ua),ua);
-  };
+function renderResult(r) {
+  if (!r) return;
+  lastResult = r;
+  const grid = document.getElementById('result-grid');
+  const cards = [
+    { label: 'Browser', value: `${r.browser.name} ${r.browser.version}`.trim(), accent: true },
+    { label: 'Engine', value: `${r.engine.name} ${r.engine.version}`.trim() },
+    { label: 'Operating System', value: `${r.os.name} ${r.os.version}`.trim() },
+    { label: 'Device Type', value: r.device.type, accent: r.device.type !== 'Desktop', cls: r.isBot ? 'bot' : '' },
+  ];
+  if (r.device.brand) cards.push({ label: 'Device Brand', value: r.device.brand });
+  if (r.isBot) cards.push({ label: 'Bot Detected', value: r.botName, cls: 'bot' });
 
-  window.randomUA=function(){
-    const ua=RANDOM_UAS[Math.floor(Math.random()*RANDOM_UAS.length)];
-    document.getElementById('uaInput').value=ua;
-    renderResult(detect(ua),ua);
-  };
+  grid.innerHTML = cards.map(c =>
+    `<div class="result-card">
+      <div class="label">${c.label}</div>
+      <div class="value${c.accent ? ' accent' : ''}${c.cls ? ' ' + c.cls : ''}">${escHtml(c.value)}</div>
+    </div>`
+  ).join('');
 
-  window.loadHistory=function(i){
-    const h=history[i];
-    if(!h)return;
-    document.getElementById('uaInput').value=h.ua;
-    renderResult(detect(h.ua),h.ua);
-  };
+  document.getElementById('raw-json').textContent = JSON.stringify(r, null, 2);
+  document.getElementById('results').classList.add('visible');
+}
 
-  window.copyJSON=function(btn){
-    const el=document.getElementById('result');
-    const d=el._parsed;
-    if(!d)return;
-    navigator.clipboard.writeText(JSON.stringify(d,null,2)).then(()=>{
-      btn.textContent='✓ Copied!';setTimeout(()=>btn.textContent='📋 Copy JSON',1500);
-    });
-  };
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
 
-  window.subscribe=function(){
-    const email=document.getElementById('emailInput').value.trim();
-    const msg=document.getElementById('subMsg');
-    if(!email||!email.includes('@')){msg.textContent='Please enter a valid email.';msg.style.color='#f85149';msg.style.display='block';return}
-    msg.textContent='Thanks for subscribing!';msg.style.color='var(--green)';msg.style.display='block';
-    document.getElementById('emailInput').value='';
-  };
+function parseInput() {
+  const ua = document.getElementById('ua-input').value;
+  if (!ua.trim()) return;
+  renderResult(parseUA(ua));
+}
 
-  document.getElementById('currentUA').textContent=navigator.userAgent;
-})();
+function useCurrentUA() {
+  document.getElementById('ua-input').value = navigator.userAgent;
+  parseInput();
+}
+
+function hideResults() {
+  document.getElementById('results').classList.remove('visible');
+  lastResult = null;
+}
+
+function copyJSON() {
+  if (!lastResult) { showToast('Parse a UA first'); return; }
+  navigator.clipboard.writeText(JSON.stringify(lastResult, null, 2)).then(() => showToast('Copied!'));
+}
+
+function exportJSON() {
+  if (!lastResult) { showToast('Parse a UA first'); return; }
+  const blob = new Blob([JSON.stringify(lastResult, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'ua-parsed.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1500);
+}
+
+// --- Preset Library ---
+let activeTab = Object.keys(PRESETS)[0];
+
+function renderLibrary() {
+  const tabs = document.getElementById('lib-tabs');
+  tabs.innerHTML = Object.keys(PRESETS).map(k =>
+    `<button class="${k === activeTab ? 'active' : ''}" onclick="setLibTab('${k}')">${k}</button>`
+  ).join('');
+
+  const list = document.getElementById('lib-list');
+  list.innerHTML = PRESETS[activeTab].map(p =>
+    `<div class="lib-item" onclick="usePreset(${escAttr(JSON.stringify(p.ua))})">
+      <span class="name">${escHtml(p.name)}</span>
+      <span class="ua-preview">${escHtml(p.ua)}</span>
+    </div>`
+  ).join('');
+}
+
+function escAttr(s) { return s.replace(/'/g, "\\'").replace(/"/g, '&quot;'); }
+
+function setLibTab(tab) {
+  activeTab = tab;
+  renderLibrary();
+}
+
+function usePreset(ua) {
+  document.getElementById('ua-input').value = ua;
+  parseInput();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// --- Init ---
+document.getElementById('current-ua').textContent = navigator.userAgent;
+renderLibrary();
+
+// Auto-parse current UA on load
+document.getElementById('ua-input').value = navigator.userAgent;
+parseInput();
+
+// Allow Ctrl+Enter to parse
+document.getElementById('ua-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); parseInput(); }
+});
 </script>
-
-<!-- Email subscription widget -->
-<div style="padding:20px 24px;border-top:1px solid var(--border);max-width:800px;margin:0 auto">
-  <h3 style="font-size:18px;margin-bottom:8px;color:var(--text)">📬 Get Dev Tool Updates</h3>
-  <p style="color:var(--dim);font-size:13px;margin-bottom:12px">Join developers getting new free tools weekly. No spam.</p>
-  <div style="display:flex;gap:8px;max-width:400px">
-    <input id="email-input" type="email" placeholder="your@email.com" style="flex:1;padding:8px 12px;background:var(--card);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:14px">
-    <button onclick="subscribe()" style="padding:8px 16px;background:var(--green);color:#fff;border:none;border-radius:6px;font-weight:600;cursor:pointer;font-size:14px">Subscribe</button>
-  </div>
-  <p id="subscribe-msg" style="font-size:12px;margin-top:8px;display:none"></p>
-</div>
-<script>
-async function subscribe(){const e=document.getElementById("email-input").value,m=document.getElementById("subscribe-msg");if(!e||!e.includes("@")){m.textContent="Please enter a valid email";m.style.color="#f85149";m.style.display="block";return}try{const r=await fetch("https://email-collector.chesten.workers.dev/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:e})});const d=await r.json();m.textContent=d.message||"Subscribed!";m.style.color="#3fb950";m.style.display="block";document.getElementById("email-input").value=""}catch(e){m.textContent="Something went wrong";m.style.color="#f85149";m.style.display="block"}}
-</script>
-
-<!-- More Free Tools -->
-<div style="padding:20px 24px;border-top:1px solid var(--border);max-width:800px;margin:0 auto">
-  <h3 style="font-size:16px;margin-bottom:12px;color:var(--text)">🔧 More Free Developer Tools</h3>
-  <div style="display:flex;flex-wrap:wrap;gap:8px">
-    <a href="https://json-hero-8fu.pages.dev" style="padding:6px 12px;background:var(--card);border:1px solid var(--border);border-radius:4px;color:var(--dim);text-decoration:none;font-size:13px">JSON Hero</a>
-    <a href="https://css-gradient-c7l.pages.dev" style="padding:6px 12px;background:var(--card);border:1px solid var(--border);border-radius:4px;color:var(--dim);text-decoration:none;font-size:13px">CSS Gradient</a>
-    <a href="https://regex-tester-bik.pages.dev" style="padding:6px 12px;background:var(--card);border:1px solid var(--border);border-radius:4px;color:var(--dim);text-decoration:none;font-size:13px">Regex Tester</a>
-    <a href="https://color-picker-dv4.pages.dev" style="padding:6px 12px;background:var(--card);border:1px solid var(--border);border-radius:4px;color:var(--dim);text-decoration:none;font-size:13px">Color Picker</a>
-    <a href="https://json-to-ts.pages.dev" style="padding:6px 12px;background:var(--card);border:1px solid var(--border);border-radius:4px;color:var(--dim);text-decoration:none;font-size:13px">JSON→TS</a>
-    <a href="https://base64-tool-bhc.pages.dev" style="padding:6px 12px;background:var(--card);border:1px solid var(--border);border-radius:4px;color:var(--dim);text-decoration:none;font-size:13px">Base64</a>
-    <a href="https://diff-checker-1c9.pages.dev" style="padding:6px 12px;background:var(--card);border:1px solid var(--border);border-radius:4px;color:var(--dim);text-decoration:none;font-size:13px">Diff Checker</a>
-    <a href="https://password-gen-4jj.pages.dev" style="padding:6px 12px;background:var(--card);border:1px solid var(--border);border-radius:4px;color:var(--dim);text-decoration:none;font-size:13px">Password Gen</a>
-    <a href="https://devtools-site-cos.pages.dev" style="padding:6px 12px;background:var(--green);border:1px solid var(--border);border-radius:4px;color:#fff;text-decoration:none;font-size:13px;font-weight:600">All 30+ Tools →</a>
-  </div>
-</div>
 </body>
 </html>
